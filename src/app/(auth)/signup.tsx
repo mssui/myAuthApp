@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
-import { signUp } from '../firebase/auth';
+import { signUp } from '../../firebase/auth';
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
