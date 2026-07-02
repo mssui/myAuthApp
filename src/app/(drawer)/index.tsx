@@ -1,32 +1,20 @@
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import "../../../global.css";
-import { subscribeToAuthChanges } from '../../firebase/auth';
 
-export default function Index() {
-  const [loading, setLoading] = useState(true);
-console.log("Index mounted");
-  useEffect(() => {
-      console.log("Index mounted");
+import { Button, Text, View } from 'react-native';
+import { useAuth } from '../../hooks/useAuth';
 
-    const unsubscribe = subscribeToAuthChanges((user) => {
-      console.log("observeAuth fired");
-    console.log("User:", user?.email);
-      if (user) {
-        router.replace('/home');
-      } else {
-        router.replace('/login');
-      }
-      setLoading(false);
-    });
-
-    return unsubscribe;
-  }, []);
-
+export default function HomeScreen() {
+  const { user, logout } = useAuth();
+  
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
-      <ActivityIndicator />
+    <View style={{ padding: 20 }}>
+      <Text>Welcome! {user?.displayName} 🎉</Text>
+      <Text className="text-white text-4xl font-bold">
+        NativeWind?
+      </Text>
+      
+      <Button title="Logout" onPress={logout} />
     </View>
   );
 }
+
+

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, TextInput, View } from 'react-native';
-import { signUp } from '../../firebase/auth';
+import { signup } from '../../firebase/auth';
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -8,7 +8,7 @@ export default function SignupScreen({ navigation }) {
 
   const handleSignup = async () => {
     try {
-      await signUp(email, password);
+      await signup(email, password);
       navigation.navigate('Login');
     } catch (e) {
       console.log(e.message);

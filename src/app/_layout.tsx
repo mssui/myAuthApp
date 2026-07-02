@@ -1,32 +1,42 @@
 import "../../global.css";
 
-import { router, Stack, useSegments } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
-import { subscribeToAuthChanges } from "../firebase/auth";
+import { AuthProvider } from "../contexts/AuthContext";
 
+import { useAuth } from "../hooks/useAuth";
 
+function AuthGate() {
+  const { user, loading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
-export default function Layout() {
-   const segments = useSegments();
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
 
-   useEffect(() => {
-    const unsubscribe = subscribeToAuthChanges((user) => {
-      const currentRoute = segments[0];
+    const inAuthGroup = segments[0] === "(auth)";
 
-      if (user) {
-        if (currentRoute === "login" || currentRoute === "signup") {
-          router.replace("/home");
-        }
-      } else {
-        if (currentRoute !== "login" && currentRoute !== "signup") {
-          router.replace("/login");
-        }
-      }
-    });
+    if (!user && !inAuthGroup) {
+      router.replace("/(auth)/login");
+    }
 
-    return unsubscribe;
-  }, [segments]);
+    if (user && inAuthGroup) {
+      router.replace("/(drawer)");
+    }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  }, [user, loading, segments]);
+
+  return (
+    <Stack screenOptions={{ headerShown: false }} />
+  );
 }
 
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <AuthGate />
+    </AuthProvider>
+  );
+}
