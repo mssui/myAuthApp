@@ -7,7 +7,7 @@ export default function HomeScreen() {
   
   return (
     <View style={{ padding: 20 }}>
-      <Text>Welcome! {user?.displayName} 🎉</Text>
+      <Text>Hello 👋 {user?.displayName} 🎉</Text>
       <Text className="text-white text-4xl font-bold">
         NativeWind?
       </Text>

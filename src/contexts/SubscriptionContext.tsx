@@ -1,0 +1,7 @@
+// isPremium
+
+// purchase()
+
+// restore()
+
+// loading

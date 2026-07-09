@@ -1,29 +1,34 @@
-import { Image, Text, View } from 'react-native';
-import { useAuth } from '../../hooks/useAuth';
+import { Text } from 'react-native';
+import Avatar from '../../components/display/Avatar';
+import Card from '../../components/layout/Card';
+import Screen from '../../components/layout/Screen';
 
+import { useAuth } from '../../hooks/useAuth';
 
 export default function ProfileScreen() {
   const { user } = useAuth();
 
   return (
-    <View className="flex-1 items-center justify-center bg-white p-6">
+    <Screen>
 
       {user?.photoURL && (
-        <Image
-          source={{ uri: user.photoURL }}
-          className="w-28 h-28 rounded-full"
-        />
+        <Avatar user={user} />
       ) || null}
 
-      <Text className="mt-6 text-2xl font-bold">
-        {user?.displayName ?? "Unknown User" }
-      </Text>
+      <Card>
+        <Text className="text-xl font-bold">
+            {user?.displayName ?? "Unknown User"}
+        </Text>
+   
+        <Text>
+            {user?.email}
+        </Text>
+  
+        <Text>
+            {user?.providerData[0]?.providerId}
+        </Text>
+    </Card>
 
-      <Text className="mt-2 text-gray-500">
-       {user?.email ?? ""}
-       {user?.providerData[0]?.providerId || ""}
-      </Text>
-
-    </View>
+    </Screen>
   );
 }
